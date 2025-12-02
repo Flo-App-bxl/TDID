@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>TDID – Train and Departure Information for Driver</title>
+<title>TDID2 – Train and Departure Information for Driver</title>
 
 <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/Flo-App-bxl/TDID-Live/main/assets/intro_poster.jpg">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/Flo-App-bxl/TDID-Live/main/assets/intro_poster.jpg">
@@ -372,12 +372,7 @@
   </div>
   <div class="note" id="note"></div>
 
-<div style="position:fixed; top:80px; left:10px; z-index:99999;">
-  <audio controls
-         style="width:250px; background:#fff;"
-         src="https://raw.githubusercontent.com/Flo-App-bxl/TDID-Live/gh-pages/Annonce.mp3">
-  </audio>
-</div>
+
 
 <script>
 /* ====== Constantes ====== */
@@ -1250,10 +1245,10 @@ function setupAnnonceAudio() {
   // Contournement iOS / Chrome / Edge : on rejoue au 1er clic/touch
   const unlock = () => {
     playOnce();
-    document.removeEventListener('click', unlock);
+
     document.removeEventListener('touchstart', unlock);
   };
-  document.addEventListener('click', unlock, { once: true });
+
   document.addEventListener('touchstart', unlock, { once: true });
 }
 
