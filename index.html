@@ -372,12 +372,7 @@
   </div>
   <div class="note" id="note"></div>
 
-<div style="position:fixed; top:80px; left:10px; z-index:99999;">
-  <audio controls
-         style="width:250px; background:#fff;"
-         src="https://raw.githubusercontent.com/Flo-App-bxl/TDID-Live/gh-pages/Annonce.mp3">
-  </audio>
-</div>
+
 
 <script>
 /* ====== Constantes ====== */
@@ -1250,10 +1245,10 @@ function setupAnnonceAudio() {
   // Contournement iOS / Chrome / Edge : on rejoue au 1er clic/touch
   const unlock = () => {
     playOnce();
-    document.removeEventListener('click', unlock);
+
     document.removeEventListener('touchstart', unlock);
   };
-  document.addEventListener('click', unlock, { once: true });
+
   document.addEventListener('touchstart', unlock, { once: true });
 }
 
