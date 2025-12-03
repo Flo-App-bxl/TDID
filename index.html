@@ -1207,14 +1207,15 @@ async function tick(){
   await handleNightOverlay(k);
 }
 /* ====== Annonce audio (optionnelle) ====== */
-// URL directe vers le MP3 sur la branche gh-pages
+/* ====== Annonce audio (optionnelle) ====== */
 const ANNONCE_URL = 'https://raw.githubusercontent.com/Flo-App-bxl/TDID-Live/gh-pages/Annonce.mp3';
 
-let annonceAudio = null;
+let annonceAudio   = null;
 let annonceInterval = null;
+let annonceTimeout  = null;
+let annonceStarted  = false;
 
 function setupAnnonceAudio() {
-  // On crée l'objet Audio une seule fois
   annonceAudio = new Audio(ANNONCE_URL);
   annonceAudio.preload = 'auto';
 
@@ -1231,25 +1232,37 @@ function setupAnnonceAudio() {
           // Autoplay bloqué, on attend une interaction utilisateur
         });
       }
-    } catch (e) {
-      // rien de spécial
-    }
+    } catch (e) {}
   };
 
-  // Lancement automatique après 10 secondes
-  setTimeout(() => {
+  // Démarrage "officiel" de la boucle (une seule fois)
+  const startLoop = () => {
+    if (annonceStarted) return;       // déjà lancé → on ne fait rien
+    annonceStarted = true;
+
+    if (annonceTimeout) {
+      clearTimeout(annonceTimeout);   // on annule la tempo si elle existait
+      annonceTimeout = null;
+    }
+
     playOnce();
     annonceInterval = setInterval(playOnce, REPEAT_MS);
-  }, PLAY_DELAY_MS);
+  };
 
-  // Contournement iOS / Chrome / Edge : on rejoue au 1er clic/touch
+  // Tempo auto après 10 s (si personne n'a touché avant)
+  annonceTimeout = setTimeout(startLoop, PLAY_DELAY_MS);
+
+  // Contournement iOS / Chrome / Edge : 1er touch/clic/clavier débloque tout
   const unlock = () => {
-    playOnce();
-
+    startLoop();
     document.removeEventListener('touchstart', unlock);
+    document.removeEventListener('click', unlock);
+    document.removeEventListener('keydown', unlock);
   };
 
   document.addEventListener('touchstart', unlock, { once: true });
+  document.addEventListener('click',      unlock, { once: true });
+  document.addEventListener('keydown',    unlock, { once: true });
 }
 
 // On initialise après le chargement du DOM
